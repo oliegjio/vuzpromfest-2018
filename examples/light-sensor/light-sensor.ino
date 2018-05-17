@@ -9,8 +9,10 @@ void setup()
 void loop()
 {
   sensorValue = analogRead(sensorPort);
+  
   // С конвертацией в вольты:
   Serial.println(sensorValue * 0.0049); 
+  
   delay(50);
 }
 

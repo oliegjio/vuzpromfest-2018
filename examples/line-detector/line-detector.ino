@@ -1,6 +1,5 @@
 // Порт, к которому подключен детектор:
 const int lineTrackerPort = 48;
-
 int lineTrackerState = 0;
 
 void setup()
@@ -12,14 +11,10 @@ void setup()
 void loop()
 {
   lineTrackerState = digitalRead(lineTrackerPort);
-  if (lineTrackerState == HIGH)
-  {
-    Serial.println("White");
-  }
-  else
-  {
-    Serial.println("Black");
-  }
+  
+  if (lineTrackerState == HIGH) Serial.println("White");
+  else Serial.println("Black");
+  
   delay(50);
 }
 
