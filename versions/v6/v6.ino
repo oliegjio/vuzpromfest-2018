@@ -20,7 +20,7 @@ int motor1SetReversed = false;
 int motor2SetReversed = true;
 
 int motorSpeed = 150;
-int kp = -3;
+int kp = 3;
 
 void setup()
 {
@@ -63,30 +63,28 @@ void forward(float l)
   powerMotor1(motorSpeed);
   powerMotor2(motorSpeed);
   
-  while (abs(oldPosLeft - encoderLeft.getPosition()) < l / (PI * 10.3))
-  {
-    u = kp * ((oldPosLeft - encoderLeft.getPosition()) - (oldPosRight - encoderRight.getPosition()));
-    powerMotor2(motorSpeed - u);
-    powerMotor1(motorSpeed + u);
-  }
+  float error = posLeft - posRight
+  float u = kp * error
+  
+  powerMotor1(motorSpeed + u)
+  powerMotor2(motorSpeed - u)
 }
 
 void backward(float l)
 {
-  double oldPosLeft = encoderLeft.getPosition();
-  double oldPosRight = encoderRight.getPosition();
+  double posLeft = encoderLeft.getPosition();
+  double posRight = encoderRight.getPosition();
   
   float u = 0.0;
   
   powerMotor1(-motorSpeed);
   powerMotor2(-motorSpeed);
   
-  while (abs(oldPosLeft - encoderLeft.getPosition()) < l / (PI * 10.3))
-  {
-    u = kp * ((oldPosLeft - encoderLeft.getPosition()) - (oldPosRight - encoderRight.getPosition()));
-    powerMotor2(-(motorSpeed - u));
-    powerMotor1(-(motorSpeed + u));
-  }
+  float error = posLeft - posRight
+  float u = kp * error
+  
+  powerMotor1(-(motorSpeed + u))
+  powerMotor2(-(motorSpeed - u))
 }
 
 void stopAll()
