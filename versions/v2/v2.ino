@@ -1,3 +1,7 @@
+/**
+ * Работа с УЗ сонаром.
+ */
+
 const int trig = 2; // Input
 const int echo = 3; // Output.
 

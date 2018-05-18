@@ -1,10 +1,14 @@
+/**
+ * Motor with motor driver.
+ */
+
 #include <Servo.h>
 
 Servo grab;
 
 void setup()
 {
-  grab.attach(2); // Указать порт, к которому подключен мотор клешни.
+  grab.attach(2);
 }
 
 void reveal()
@@ -22,9 +26,9 @@ void close()
 }
 
 void loop() {
-  reveal(); // Раскрыть хват.
+  reveal();
   delay(2000);
   
-  close(); // Сомкнуть хват.
+  close();
   delay(2000);
 }
