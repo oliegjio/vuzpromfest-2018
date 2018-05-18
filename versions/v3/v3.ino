@@ -3,7 +3,7 @@
  */
 
 #include <Wire.h>
-#include <I2CEncoder.h>
+#include "I2CEncoder.h"
 
 #define RANGE 352
 #define PI 3.1416
@@ -82,7 +82,7 @@ void backward(float l)
   
   while (abs(oldPosLeft - encoderLeft.getPosition()) < 2.0 * 1 / (PI / 10.3))
   {
-    u = kp * ((oldPosLeft - encoderLeft.getPosition()) - (oldPosRight - encoderRight.getPosition()))
+    u = kp * ((oldPosLeft - encoderLeft.getPosition()) - (oldPosRight - encoderRight.getPosition()));
     powerMotor2(-(motorSpeed + u));
     powerMotor1(-(motorSpeed - u));
   }
