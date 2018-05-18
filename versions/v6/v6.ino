@@ -55,36 +55,32 @@ void loop() {}
 
 void forward(float l)
 {
-  double oldPosLeft = encoderLeft.getPosition();
-  double oldPosRight = encoderLeft.getPosition();
-  
-  float u = 0.0;
+  double posLeft = encoderLeft.getPosition();
+  double posRight = encoderLeft.getPosition();
   
   powerMotor1(motorSpeed);
   powerMotor2(motorSpeed);
   
-  float error = posLeft - posRight
-  float u = kp * error
+  float error = posLeft - posRight;
+  float u = kp * error;
   
-  powerMotor1(motorSpeed + u)
-  powerMotor2(motorSpeed - u)
+  powerMotor1(motorSpeed + u);
+  powerMotor2(motorSpeed - u);
 }
 
 void backward(float l)
 {
   double posLeft = encoderLeft.getPosition();
   double posRight = encoderRight.getPosition();
-  
-  float u = 0.0;
-  
+ 
   powerMotor1(-motorSpeed);
   powerMotor2(-motorSpeed);
   
-  float error = posLeft - posRight
-  float u = kp * error
+  float error = posLeft - posRight;
+  float u = kp * error;
   
-  powerMotor1(-(motorSpeed + u))
-  powerMotor2(-(motorSpeed - u))
+  powerMotor1(-(motorSpeed + u));
+  powerMotor2(-(motorSpeed - u));
 }
 
 void stopAll()
