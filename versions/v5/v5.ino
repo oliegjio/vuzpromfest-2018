@@ -56,10 +56,8 @@ void start()
 {
   forward(RANGE); 
   stopAll();
-  
   reroll_up();
   delay(1000);
-  
   reroll_down();
   backward(RANGE);
 }
