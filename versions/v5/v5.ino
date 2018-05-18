@@ -7,6 +7,7 @@
 #include <I2CEncoder.h>
 
 #define RANGE 293 // Change after test 
+#define TIMER 1000
 
 #define PI 3.1416
 
@@ -192,13 +193,13 @@ void close()
 void reroll_up()
 {
   roll.writeMicroseconds(1800);
-  delay(1000);
+  delay(TIMER);
   roll.writeMicroseconds(1500);
 }
 
 void reroll_down()
 {
   roll.writeMicroseconds(1200);
-  delay(1000);
+  delay(TIMER);
   roll.writeMicroseconds(1500);
 }
