@@ -7,6 +7,7 @@
 #include <I2CEncoder.h>
 
 #define RANGE 293 // Change after test 
+#define TIMER 1000
 
 #define PI 3.1416
 
@@ -55,10 +56,8 @@ void start()
 {
   forward(RANGE); 
   stopAll();
-  
   reroll_up();
   delay(1000);
-  
   reroll_down();
   backward(RANGE);
 }
@@ -75,12 +74,13 @@ void forward(float l)
   powerMotor1(motorSpeed);
   powerMotor2(motorSpeed);
   
-  while (abs(oldPosLeft - encoderLeft.getPosition()) < 2.0 * 1 / (PI * 10.3))
+  while (abs(oldPosLeft - encoderLeft.getPosition()) < l / (PI * 10.3))
   {
     u = kp * ((oldPosLeft - encoderLeft.getPosition()) - (oldPosRight - encoderRight.getPosition()));
     powerMotor2(motorSpeed - u);
     powerMotor1(motorSpeed + u);
   }
+  
 }
 
 void backward(float l)
@@ -93,7 +93,7 @@ void backward(float l)
   powerMotor1(-motorSpeed);
   powerMotor2(-motorSpeed);
   
-  while (abs(oldPosLeft - encoderLeft.getPosition()) < 2.0 * 1 / (PI / 10.3))
+  while (abs(oldPosLeft - encoderLeft.getPosition()) < l / (PI / 10.3))
   {
     u = kp * ((oldPosLeft - encoderLeft.getPosition()) - (oldPosRight - encoderRight.getPosition()))
     powerMotor2(-(motorSpeed + u));
@@ -194,13 +194,13 @@ void close()
 void reroll_up()
 {
   roll.writeMicroseconds(1800);
-  delay(1000);
+  delay(TIMER);
   roll.writeMicroseconds(1500);
 }
 
 void reroll_down()
 {
   roll.writeMicroseconds(1200);
-  delay(1000);
+  delay(TIMER);
   roll.writeMicroseconds(1500);
 }
