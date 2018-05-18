@@ -5,7 +5,8 @@
 #include <Wire.h>
 #include "I2CEncoder.h"
 
-#define RANGE 1000
+#define RANGE 50
+
 #define PI 3.1416
 
 I2CEncoder encoderLeft, encoderRight;
