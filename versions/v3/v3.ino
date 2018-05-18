@@ -5,7 +5,7 @@
 #include <Wire.h>
 #include "I2CEncoder.h"
 
-#define RANGE 50
+#define RANGE 100
 
 #define PI 3.1416
 
@@ -63,7 +63,7 @@ void forward(float l)
   powerMotor1(motorSpeed);
   powerMotor2(motorSpeed);
   
-  while (abs(oldPosLeft - encoderLeft.getPosition()) < l / (PI * 10.3))
+  while (abs(oldPosLeft - encoderLeft.getPosition()) < 2.0 * l / (PI * 10.3))
   {
     u = kp * ((oldPosLeft - encoderLeft.getPosition()) - (oldPosRight - encoderRight.getPosition()));
     powerMotor2(motorSpeed - u);
@@ -81,7 +81,7 @@ void backward(float l)
   powerMotor1(-motorSpeed);
   powerMotor2(-motorSpeed);
   
-  while (abs(oldPosLeft - encoderLeft.getPosition()) < l / (PI / 10.3))
+  while (abs(oldPosLeft - encoderLeft.getPosition()) < 2.0 * l / (PI * 10.3))
   {
     u = kp * ((oldPosLeft - encoderLeft.getPosition()) - (oldPosRight - encoderRight.getPosition()));
     powerMotor2(-(motorSpeed + u));
