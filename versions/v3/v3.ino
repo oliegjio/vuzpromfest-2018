@@ -20,7 +20,7 @@ int motor1SetReversed = false;
 int motor2SetReversed = true;
 
 int motorSpeed = 150;
-int kp = 50;
+int kp = 10;
 
 void setup()
 {
