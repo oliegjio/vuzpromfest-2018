@@ -5,7 +5,7 @@
 #include <Wire.h>
 #include <I2CEncoder.h>
 
-#define RANGE 352
+#define RANGE 1000
 #define PI 3.1416
 
 I2CEncoder encoderLeft, encoderRight;
@@ -15,8 +15,8 @@ const int motorM1PinTwo = 45;
 const int motorM2PinOne = 6;
 const int motorM2PinTwo = 7;
 
-int motor1SetReversed = true;
-int motor2SetReversed = false;
+int motor1SetReversed = false;
+int motor2SetReversed = true;
 
 int motorSpeed = 150;
 int kp = 50;
@@ -44,10 +44,10 @@ void setup()
 void start()
 {
   forward(RANGE);
-  delay(1500);
+  stopAll();
   
   backward(RANGE);
-  delay(1500);
+  stopAll();
 }
 
 void loop() {}
@@ -62,7 +62,7 @@ void forward(float l)
   powerMotor1(motorSpeed);
   powerMotor2(motorSpeed);
   
-  while (abs(oldPosLeft - encoderLeft.getPosition()) < 2.0 * 1 / (PI * 10.3))
+  while (abs(oldPosLeft - encoderLeft.getPosition()) < 2.0 * l / (PI * 10.3))
   {
     u = kp * ((oldPosLeft - encoderLeft.getPosition()) - (oldPosRight - encoderRight.getPosition()));
     powerMotor2(motorSpeed - u);
@@ -80,12 +80,20 @@ void backward(float l)
   powerMotor1(-motorSpeed);
   powerMotor2(-motorSpeed);
   
-  while (abs(oldPosLeft - encoderLeft.getPosition()) < 2.0 * 1 / (PI / 10.3))
+  while (abs(oldPosLeft - encoderLeft.getPosition()) < 2.0 * l / (PI / 10.3))
   {
-    u = kp * ((oldPosLeft - encoderLeft.getPosition()) - (oldPosRight - encoderRight.getPosition()))
+    u = kp * ((oldPosLeft - encoderLeft.getPosition()) - (oldPosRight - encoderRight.getPosition()));
     powerMotor2(-(motorSpeed + u));
     powerMotor1(-(motorSpeed - u));
   }
+}
+
+void stopAll()
+{ 
+  powerMotor1(0);
+  powerMotor2(0);
+  
+  delay(1000);
 }
 
 void powerMotor1(int speedValue)
