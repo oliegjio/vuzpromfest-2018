@@ -20,7 +20,7 @@ int motor1SetReversed = false;
 int motor2SetReversed = true;
 
 int motorSpeed = 150;
-int kp = -3;
+int kp = 50;
 
 void setup()
 {
@@ -51,7 +51,12 @@ void start()
   stopAll();
 }
 
-void loop() {}
+void loop()
+{
+//  Serial.print(encoderLeft.getPosition());
+//  Serial.print(" ");
+//  Ser/ial.println(encoderRight.getPosition());
+}
 
 void forward(float l)
 {

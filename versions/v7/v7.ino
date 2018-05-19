@@ -1,11 +1,16 @@
 /**
- * Пасажиры.
+ * Погрузка.
  */
 
 #include <Wire.h>
 #include "I2CEncoder.h"
 
-#define RANGE 360
+#define FORWARD1 299
+#define FORWARD2 90
+#define FORWARD3 80
+#define FORWARD4 310
+#define ANGLE1 90
+#define ANGLE2 85
 
 #define PI 3.1416
 
@@ -15,6 +20,9 @@ const int motorM1PinOne = 46;
 const int motorM1PinTwo = 45;
 const int motorM2PinOne = 6;
 const int motorM2PinTwo = 7;
+
+const int armServoPin = 5;
+const int clawServoPin = 2;
 
 int motor1SetReversed = false;
 int motor2SetReversed = true;
@@ -31,6 +39,9 @@ void setup()
   encoderLeft.setReversed(true);
   encoderLeft.unTerminate();
   encoderRight.init(MOTOR_393_TORQUE_ROTATIONS, MOTOR_393_TIME_DELTA);
+
+  pinMode(armServoPin, OUTPUT);
+  pinMode(clawServoPin, OUTPUT);
   
   pinMode(motorM1PinOne, OUTPUT);
   pinMode(motorM1PinTwo, OUTPUT);
@@ -44,10 +55,34 @@ void setup()
 
 void start()
 {
-  forward(RANGE);
+  reveal();
+  delay(3000);
+  
+  close();
+  delay(2000);
+  
+  forward(FORWARD1);
+  stopAll();
+
+  left(ANGLE1);
+  stopAll();
+
+  forward(FORWARD2);
   stopAll();
   
-  backward(RANGE);
+  reveal();
+  delay(2000);
+  
+  close();
+  delay(2000);
+  
+  backward(FORWARD3);
+  stopAll();
+
+  left(ANGLE2);
+  stopAll();
+
+  forward(FORWARD4);
   stopAll();
 }
 
@@ -61,7 +96,7 @@ void forward(float l)
   int u = 0.0;
   int error = 0.0;
 
-  powerMotor1(motorSpeed - 40);
+  powerMotor1(motorSpeed - 50);
   powerMotor2(motorSpeed);
 
   while (abs(posLeft - encoderLeft.getPosition()) < 2.0 * l / (PI * 10.3))
@@ -85,7 +120,7 @@ void backward(float l)
   int u = 0.0;
   int error = 0.0;
 
-  powerMotor1(-motorSpeed - 40);
+  powerMotor1(-motorSpeed - 50);
   powerMotor2(-motorSpeed);
 
   while (abs(posLeft - encoderLeft.getPosition()) < 2.0 * l / (PI * 10.3))
@@ -101,8 +136,35 @@ void backward(float l)
   encoderRight.zero();
 }
 
+void left(float a)
+{
+  double oldPosLeft = encoderLeft.getPosition();
+  double oldPosRight = encoderRight.getPosition();
+  
+  float u = 0.0;
+  
+  powerMotor1(motorSpeed);
+  powerMotor2(-motorSpeed);
+  
+  float B = 31.0; // Колея при повороте.
+  float d = 10.5; // Диаметр колеса.
+  
+  while (abs(oldPosLeft - encoderLeft.getPosition()) < 2.0 * a * B / (360.0 * d)) 
+  {
+    u = kp * ((oldPosLeft - encoderLeft.getPosition()) + (oldPosRight - encoderRight.getPosition()));
+    powerMotor1(motorSpeed + u);
+    powerMotor2(-motorSpeed + u);
+  }
+
+  encoderLeft.zero();
+  encoderRight.zero();
+}
+
 void stopAll()
 { 
+  analogWrite(clawServoPin, 188);
+  analogWrite(armServoPin, 188);
+  
   powerMotor1(0);
   powerMotor2(0);
   
@@ -151,4 +213,32 @@ void powerMotor2(int speedValue)
     analogWrite(motorM2PinOne, abs(speedValue));
     digitalWrite(motorM2PinTwo, LOW);
   }
+}
+
+void reveal()
+{
+  analogWrite(clawServoPin, 221);
+  delay(900);
+  analogWrite(clawServoPin, 188);
+}
+
+void close()
+{
+  analogWrite(clawServoPin, 155);
+  delay(900);
+  analogWrite(clawServoPin, 188);
+}
+
+void reroll_up()
+{
+  analogWrite(armServoPin, 155);
+  delay(1000);
+  analogWrite(armServoPin, 188);
+}
+
+void reroll_down()
+{
+  analogWrite(armServoPin, 221);
+  delay(1000);
+  analogWrite(armServoPin, 188);
 }
