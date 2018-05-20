@@ -7,7 +7,7 @@
 
 #define FORWARD1 299
 #define FORWARD2 90
-#define FORWARD3 80
+#define FORWARD3 100
 #define FORWARD4 310
 #define ANGLE1 90
 #define ANGLE2 85

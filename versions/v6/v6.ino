@@ -19,7 +19,7 @@ const int motorM2PinTwo = 7;
 int motor1SetReversed = false;
 int motor2SetReversed = true;
 
-int motorSpeed = 150;
+int motorSpeed = 135;
 int kp = 250;
 
 void setup()

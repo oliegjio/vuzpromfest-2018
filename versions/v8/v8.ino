@@ -5,7 +5,8 @@
 #include <Wire.h>
 #include "I2CEncoder.h"
 
-#define FORWARD1 299
+//#define FORWARD1 299
+#define FORWARD1 280
 #define FORWARD2 297
 #define FORWARD3 80
 #define FORWARD4 310
